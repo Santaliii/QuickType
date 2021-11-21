@@ -1,24 +1,54 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from 'react';
+import Header from './components/Header'
+import Typer from './components/TypingTest';
+import Timer from './components/Timer'
+import { getWordArray, wordArray } from "./util/WordArray"
+import { arrayOfArrayOfWords } from "./types/types";
+import Results from './components/Results';
 
-function App() {
+
+
+
+const App: React.FC = () => {
+
+  const [currWordArray, setCurrWordArray] = useState<arrayOfArrayOfWords>(wordArray)
+  const [timeToFinish, setTimeToFinish] = useState<number>(0)
+  const [finish, setFinish] = useState<boolean>(false)
+
+  const initializeNewTest = () => {
+    let newWordArray = getWordArray()
+    setCurrWordArray([...newWordArray])
+  }
+
+  const updateWordArray = (updatedWordArray: arrayOfArrayOfWords) => {
+    setCurrWordArray(updatedWordArray)
+    
+  }
+
+  const updateFinish = (timeToFinish: number) => {
+    setTimeToFinish(timeToFinish)
+    console.log(timeToFinish);
+    setFinish(true)
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="container">
+      <div className="mid-container">
+      <Header />
+      <Timer timeToFinishTest={timeToFinish}
+          finishedWordArray={currWordArray} />
+      {
+      finish ? 
+        <Results timeToFinishTest={timeToFinish}
+          finishedWordArray={currWordArray} /> 
+          :
+        <Typer 
+          currArrayOfArrayOfWords={currWordArray} 
+            updateWordArray={updateWordArray} 
+              updateFinish={updateFinish}
+                initializeNewTest={initializeNewTest}/>
+      }
+      </div>
     </div>
   );
 }
