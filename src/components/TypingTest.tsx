@@ -51,33 +51,46 @@ const TypingTest: React.FC<ITypingTestProps> = ({currArrayOfArrayOfWords, update
     
     if( (event.keyCode < 32 || (event.keyCode > 111 && event.keyCode < 124) || (event.keyCode > 126 && event.keyCode < 173)) && event.key !== "Backspace")
       return
-    console.log(currArrayOfArrayOfWords);
     // Pushes the letter that was input by the user to the currLetterStack, so it can be compared to the correct array
     currLetterStack.push(event.key)
     if(event.key === 'Backspace'){
-      if(currWordPosition.current === 0 && currLetterPosition.current === 0){
+      if(currWordPosition.current === 0 && currLetterPosition.current === 0)
         return
-      }
-      setLetterState("")
+      
+      getCurrentLetter().state === "incorrectTemp" ? getCurrentLetter() : setLetterState("")
       if(currLetterPosition.current === 0){
         currWordPosition.current--
         currLetterPosition.current = getCurrentWord().length
+        console.log(currLetterPosition.current);
       }
       currLetterPosition.current = (currLetterPosition.current === 0) ? currLetterPosition.current : currLetterPosition.current - 1
-      setLetterState("active")
+
+      if(getCurrentLetter().state === "incorrectTemp"){
+        getCurrentWord().splice(currLetterPosition.current, 1)
+        
+      }
+
+      getCurrentLetter().state === "incorrectTemp" ? getCurrentLetter() : setLetterState("active")
       // Removes the letter that is to be erased from the currLetterStack
       currLetterStack.pop()
       updateWordArray([...currArrayOfArrayOfWords])
       return
     }
-    
     else if(currLetterStack.peek() === getCurrentLetter().letterText){
       setLetterState("correct")
       updateWordArray([...currArrayOfArrayOfWords])
-
     }
     else{
-      setLetterState("incorrect")
+      if(getCurrentLetter().letterText === " "){
+        currArrayOfArrayOfWords[currWordPosition.current].unshift({
+          letterText: event.key,
+           state: "incorrectTemp",
+            isEndOfWord: false
+          })
+      }
+      else{
+        setLetterState("incorrect")
+      }
       updateWordArray([...currArrayOfArrayOfWords])
     }
     

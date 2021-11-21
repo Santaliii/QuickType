@@ -9,7 +9,7 @@ interface ILetterProps {
 const Letter: React.FC<ILetterProps> = ({letterText, letterState}) => {
 
   return(
-    <p className={`letter ${letterState}`} >
+    <p className={`letter ${letterText === " " ? letterState === "active" ? letterState : "" : letterState}`} >
       {letterText === " " ? <>&nbsp;</> : letterText}
     </p>
   )
