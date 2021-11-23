@@ -114,13 +114,13 @@ body {
 }
 
 .letter.correct {
-    color: rgba(0, 255, 0, 0.6);
-    background-color: rgb(6, 24, 1);
+    color: rgba(128, 218, 26, 0.6);
+    background-color: rgb(60, 70, 5);
 }
 
 .letter.incorrect {
-    color: rgb(202, 6, 6);
-    background-color: rgb(53, 2, 2);
+    color: rgb(158, 14, 14);
+    background-color: rgb(80, 22, 22);
 }
 
 .letter.incorrectTemp {

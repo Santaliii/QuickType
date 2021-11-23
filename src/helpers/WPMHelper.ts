@@ -1,6 +1,6 @@
 import { arrayOfArrayOfWords } from "../types/types";
 
-const getNumOfCharacters = (finishedWordArray: arrayOfArrayOfWords) => {
+export const getNumOfCharacters = (finishedWordArray: arrayOfArrayOfWords) => {
   let numOfCharacters = 0
   for(let i = 0; i < finishedWordArray.length; i++){
     numOfCharacters += finishedWordArray[i].length
@@ -8,7 +8,7 @@ const getNumOfCharacters = (finishedWordArray: arrayOfArrayOfWords) => {
   return numOfCharacters
 }
 
-const getNumOfCorrectCharacters = (finishedWordArray: arrayOfArrayOfWords) => {
+export const getNumOfCorrectCharacters = (finishedWordArray: arrayOfArrayOfWords) => {
   let numOfCorrectCharacters = 0
   for(let i = 0; i < finishedWordArray.length; i++){
     for(let j = 0; j < finishedWordArray[i].length; j++)

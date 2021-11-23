@@ -13,12 +13,13 @@ interface ITypingTestProps {
   }[][],
   updateWordArray: (currArray: arrayOfArrayOfWords) => void,
   updateFinish: (timeToFinish: number) => void,
-  initializeNewTest: () => void
+  initializeNewTest: () => void,
+  updateTestStart: () => void
 }
 
 
 
-const TypingTest: React.FC<ITypingTestProps> = ({currArrayOfArrayOfWords, updateWordArray, updateFinish, initializeNewTest}) => {
+const TypingTest: React.FC<ITypingTestProps> = ({currArrayOfArrayOfWords, updateWordArray, updateFinish, initializeNewTest, updateTestStart}) => {
 
   /* char stack that keeps track of each letter the user inputs.
   Pushes each pressed letter onto the stack then compares it to the correct input
@@ -39,12 +40,15 @@ const TypingTest: React.FC<ITypingTestProps> = ({currArrayOfArrayOfWords, update
       window.addEventListener("keydown", onFirstType, {once: true})
     }
     setupListeners()
+
     return () => {
       window.removeEventListener("keydown", onType)
+      
     }
   }, [restart])
 
-  const onFirstType = () => timeAtTestStart = new Date()
+  const onFirstType = () => {timeAtTestStart = new Date()
+  updateTestStart()}
 
   // Event listener to listen for any keypress that occurs, including ones that do not produce printable-characters
   const onType = (event: any) => {
