@@ -1,16 +1,20 @@
 import React from "react";
-import { getGrossWPM, getNetWPM } from "../helpers/WPMHelper"
+import { getNetWPM } from "../helpers/WPMHelper"
 import { IWPMProps as IResultsProps } from "../interfaces/commonProps"
 
-const Results: React.FC<IResultsProps> = ({finishedWordArray, timeToFinishTest}) => {
+const Results: React.FC<IResultsProps> = ({finishedWordArray, timeToFinishTest, initializeNewTest}) => {
 
   
   return(
     <div className="center-of-mid results-container">
-      <h1>Your WPM is {getNetWPM(timeToFinishTest, finishedWordArray)}</h1>
-      <h1>Raw - {getGrossWPM(timeToFinishTest, finishedWordArray)}</h1>
+      <div className="wpm-container">
+        <h1>WPM <span style={{color: "orange"}}>{getNetWPM(timeToFinishTest, finishedWordArray)}</span> </h1>
+      </div>
+      <button className="new-test-btn" onClick={initializeNewTest} >Go again?</button>
     </div>
   )
+
+  
 }
 
 export default Results

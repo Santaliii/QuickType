@@ -6,72 +6,89 @@ import {  FaRedoAlt } from "react-icons/fa"
 
 
 interface ITypingTestProps {
-  currArrayOfArrayOfWords: {
-    letterText: string,
-    state: string,
-    isEndOfWord: boolean
-  }[][],
+  currArrayOfArrayOfWords: arrayOfArrayOfWords,
   updateWordArray: (currArray: arrayOfArrayOfWords) => void,
   updateFinish: (timeToFinish: number) => void,
   initializeNewTest: () => void,
-  updateTestStart: () => void
+  updateTestStart: (testStart: boolean) => void
 }
 
 
 
-const TypingTest: React.FC<ITypingTestProps> = ({currArrayOfArrayOfWords, updateWordArray, updateFinish, initializeNewTest, updateTestStart}) => {
+const TypingTest: React.FC<ITypingTestProps> = ({ currArrayOfArrayOfWords,  updateWordArray, updateFinish, updateTestStart, initializeNewTest}) => {
 
   /* char stack that keeps track of each letter the user inputs.
   Pushes each pressed letter onto the stack then compares it to the correct input
   based on currLetterPosition */
   let currLetterStack = new letterStack<string>()
   let timeAtTestStart = new Date('')
-  let inputRef = useRef() as MutableRefObject<HTMLDivElement>
+  let typingTest = useRef() as MutableRefObject<HTMLDivElement>
   const [restart, setRestart] = useState<boolean>(false)
+  const [isTyperFocused, setIsTyperFocused] = useState<boolean>(false)
   /* Tracks the position of the word and letter that is next expected to be input from the user.
   Is either incremented/decremented based on the user's input */
   let currLetterPosition = useRef(0)
   let currWordPosition = useRef(0)
-  // Adds event listeners each time we restart,
   useEffect(() => {
-    
+
+    let typingTestRef = typingTest.current
+
     const setupListeners = () => {
-      window.addEventListener("keydown", onType)
-      window.addEventListener("keydown", onFirstType, {once: true})
+      window.addEventListener("keypress", () => {
+        if(!isTyperFocused){
+          typingTestRef.focus()
+          setIsTyperFocused(true)
+        }
+      })
+      window.addEventListener("click", () => {
+        setTimeout(() => {
+            setIsTyperFocused(false)
+        }, 1000)
+      })
+      typingTestRef.addEventListener("keydown", onType)
+      typingTestRef.addEventListener("keydown", onFirstType, {once: true})
     }
+    
     setupListeners()
 
     return () => {
-      window.removeEventListener("keydown", onType)
-      
+      setIsTyperFocused(true)
+      typingTestRef.removeEventListener("keydown", onType)
+      currLetterPosition.current = 0
+      currWordPosition.current = 0
     }
+    
   }, [restart])
 
-  const onFirstType = () => {timeAtTestStart = new Date()
-  updateTestStart()}
+  const onFirstType = () => {
+    timeAtTestStart = new Date()
+    updateTestStart(true)
+  }
 
-  // Event listener to listen for any keypress that occurs, including ones that do not produce printable-characters
+  // Event listener to listen for any keypress that occurs, including ones that do not produce printable characters
   const onType = (event: any) => {
     
-    if( (event.keyCode < 32 || (event.keyCode > 111 && event.keyCode < 124) || (event.keyCode > 126 && event.keyCode < 173)) && event.key !== "Backspace")
-      return
     // Pushes the letter that was input by the user to the currLetterStack, so it can be compared to the correct array
     currLetterStack.push(event.key)
     if(event.key === 'Backspace'){
+      // If we are at the first letter of the first word, don't do anything
       if(currWordPosition.current === 0 && currLetterPosition.current === 0)
         return
       
+      // If the current letter is an extra incorrect letter, reset its state.
       getCurrentLetter().state === "incorrectTemp" ? getCurrentLetter() : setLetterState("")
+      // If we're at the first letter of a word
       if(currLetterPosition.current === 0){
+        // Go back to the previous word
         currWordPosition.current--
+        // Position the current letter at the end of that previous word
         currLetterPosition.current = getCurrentWord().length
-        console.log(currLetterPosition.current);
       }
-      currLetterPosition.current = (currLetterPosition.current === 0) ? currLetterPosition.current : currLetterPosition.current - 1
+      // If not, go back to the previous letter normally
+      currLetterPosition.current--
 
       if(getCurrentLetter().state === "incorrectTemp"){
         getCurrentWord().splice(currLetterPosition.current, 1)
-        
       }
 
       getCurrentLetter().state === "incorrectTemp" ? getCurrentLetter() : setLetterState("active")
@@ -85,7 +102,12 @@ const TypingTest: React.FC<ITypingTestProps> = ({currArrayOfArrayOfWords, update
       updateWordArray([...currArrayOfArrayOfWords])
     }
     else{
-      if(getCurrentLetter().letterText === " "){
+      if(currLetterStack.peek() === " " && (currWordPosition.current !== currArrayOfArrayOfWords.length - 1)){
+        getCurrentLetter().state = ""
+        currWordPosition.current++
+        currLetterPosition.current = 0
+      }
+      else if(getCurrentLetter().letterText === " "){
         currArrayOfArrayOfWords[currWordPosition.current].unshift({
           letterText: event.key,
            state: "incorrectTemp",
@@ -153,18 +175,19 @@ const TypingTest: React.FC<ITypingTestProps> = ({currArrayOfArrayOfWords, update
   }
 
   const restartTest = () => {
-    inputRef.current.focus()
+    typingTest.current.focus()
     currLetterPosition.current = 0
     currWordPosition.current = 0
     setRestart(!restart)
     initializeNewTest()
+    updateTestStart(false)
   }
-
 
   return(
     <div className="center-of-mid typer-container">
-      <div ref={inputRef} id="test" tabIndex={0} className="word-container-wrapper">
-        <div className="word-container">
+      {isTyperFocused ? '' : <h3>Press any key to focus</h3> }
+      <div ref={typingTest} id="test" tabIndex={0} className="word-container-wrapper">
+        <div className={`word-container ${isTyperFocused ? '' : 'unfocused'}`}>
           {currArrayOfArrayOfWords.map((word, index) => 
             <div key={index} className="word">
               {word.map((letter, index) => <Letter key={index} letterText={letter.letterText} letterState={letter.state} />  )}
@@ -172,7 +195,7 @@ const TypingTest: React.FC<ITypingTestProps> = ({currArrayOfArrayOfWords, update
         </div>
       </div> 
       <button onClick={restartTest} className="restart-btn">
-        <FaRedoAlt />
+        restart
       </button>
     </div>
   )

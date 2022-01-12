@@ -1,23 +1,32 @@
-import React, { useEffect, useState } from "react";
-import { getNetWPM } from "../helpers/WPMHelper"
+import { clear } from "console";
+import React, { useEffect, useRef, useState } from "react";
+import { getNetWPM, getNumOfCorrectCharacters } from "../helpers/WPMHelper"
 import { arrayOfArrayOfWords } from "../types/types";
 
 interface ITimerProps {
-  finishedWordArray: arrayOfArrayOfWords,
+  currWordArray: arrayOfArrayOfWords,
+  testFinished: boolean
 }
 
-const Timer: React.FC<ITimerProps> = ({finishedWordArray}) => {
+const Timer: React.FC<ITimerProps> = ({currWordArray, testFinished}) => {
 
   const [currentWPM, setCurrentWPM] = useState<number>(0)
+  let interval = useRef(0)
 
   useEffect(() => {
-    window.addEventListener("keypress", () => {
-      let timeAtTestStart = new Date()
-      const intervalID = setInterval(() => {
-        setCurrentWPM(  getNetWPM(  ((new Date().getTime() - timeAtTestStart.getTime()) / 1000), finishedWordArray  )  )
-        console.log("a")
+    
+    let timeAtTestStart = new Date()
+    if(!testFinished){
+        interval.current = window.setInterval(() => {
+        setCurrentWPM(  getNetWPM(  ((new Date().getTime() - timeAtTestStart.getTime()) / 1000), currWordArray  )  )
       }, 700)
-    }, {once: true})
+    }
+
+    return () => {
+      console.log(getNumOfCorrectCharacters(currWordArray));
+      console.log(new Date().getTime() - timeAtTestStart.getTime());
+      clearInterval(interval.current)
+    }
   }, [])
 
   return(

@@ -17,7 +17,7 @@ export default class letterStack<T> implements IStack<T> {
 
   push(letter: T) {
     if(this.size() === this.capacity){
-      throw Error("Stack has reach maximum capacity")
+      throw Error("Stack has reached maximum capacity")
     }
     this.letterStack.push(letter)
   }
@@ -29,7 +29,6 @@ export default class letterStack<T> implements IStack<T> {
   peek(): T | undefined {
     return this.letterStack[this.size() - 1]
   }
-
 
   size(): number {
     return this.letterStack.length
