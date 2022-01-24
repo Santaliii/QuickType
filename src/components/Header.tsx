@@ -10,7 +10,7 @@ const Header: React.FC<IHeaderProps> = ({updateNumOfWords}) => {
   return(
     <header className="header-container">
       <div className="title-wrapper">
-        <h1>Camel Typer</h1>
+        <h1>camelType</h1>
       </div>
       <Options updateNumOfWords={updateNumOfWords}/>
     </header>
