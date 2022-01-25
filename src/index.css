@@ -59,14 +59,14 @@ body {
 .options {
     margin: 0;
     padding: 0;
-    display: flex;
-    justify-content: center;
 }
 
 .options li {
+    display: flex;
+    flex-direction: column;
     list-style: none;
     margin: 10px;
-    padding: 5px 5px 5px 5px;
+    padding: 15px;
     text-align: center;
     transition: color 0.3s ease;
     border-radius: 12px;
@@ -86,10 +86,11 @@ body {
 
 .word-options {
     display: flex;
+    flex-direction: column;
 }
 
 .word-options div {
-    margin: 10px;
+    margin: 5px;
     padding: 2px;
     cursor: pointer;
     transition: transform 0.3s ease, color 0.3s ease;
