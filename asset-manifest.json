@@ -1,21 +1,21 @@
 {
   "files": {
-    "main.css": "/camelType/static/css/main.76279ae4.chunk.css",
-    "main.js": "/camelType/static/js/main.63dacf5c.chunk.js",
-    "main.js.map": "/camelType/static/js/main.63dacf5c.chunk.js.map",
+    "main.css": "/camelType/static/css/main.3477f8de.chunk.css",
+    "main.js": "/camelType/static/js/main.e25fad54.chunk.js",
+    "main.js.map": "/camelType/static/js/main.e25fad54.chunk.js.map",
     "runtime-main.js": "/camelType/static/js/runtime-main.ec3bd7bd.js",
     "runtime-main.js.map": "/camelType/static/js/runtime-main.ec3bd7bd.js.map",
     "static/js/2.87ffcbaa.chunk.js": "/camelType/static/js/2.87ffcbaa.chunk.js",
     "static/js/2.87ffcbaa.chunk.js.map": "/camelType/static/js/2.87ffcbaa.chunk.js.map",
     "index.html": "/camelType/index.html",
-    "static/css/main.76279ae4.chunk.css.map": "/camelType/static/css/main.76279ae4.chunk.css.map",
+    "static/css/main.3477f8de.chunk.css.map": "/camelType/static/css/main.3477f8de.chunk.css.map",
     "static/js/2.87ffcbaa.chunk.js.LICENSE.txt": "/camelType/static/js/2.87ffcbaa.chunk.js.LICENSE.txt",
     "static/media/index.css": "/camelType/static/media/4267068.9d3bbeb3.jpg"
   },
   "entrypoints": [
     "static/js/runtime-main.ec3bd7bd.js",
     "static/js/2.87ffcbaa.chunk.js",
-    "static/css/main.76279ae4.chunk.css",
-    "static/js/main.63dacf5c.chunk.js"
+    "static/css/main.3477f8de.chunk.css",
+    "static/js/main.e25fad54.chunk.js"
   ]
 }
