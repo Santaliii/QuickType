@@ -1,1 +1,1 @@
-Simple typing speed test made with Typescript & React. Find @ https://github.com/Santaliii/camelType
+Simple typing speed test made with Typescript & React. Find @ https://santaliii.github.io/camelType
