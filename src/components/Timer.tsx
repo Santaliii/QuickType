@@ -1,6 +1,5 @@
-import { clear } from "console";
 import React, { useEffect, useRef, useState } from "react";
-import { getNetWPM, getNumOfCorrectCharacters } from "../helpers/WPMHelper"
+import { getNetWPM} from "../helpers/WPMHelper"
 import { arrayOfArrayOfWords } from "../types/types";
 
 interface ITimerProps {

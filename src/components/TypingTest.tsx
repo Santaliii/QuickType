@@ -77,12 +77,12 @@ const TypingTest: React.FC<ITypingTestProps> = ({ currArrayOfArrayOfWords, testF
     
     // Pushes the letter that was input by the user to the currLetterStack, so it can be compared to the correct array
     currLetterStack.push(event.key)
-    if(event.key === 'Backspace'){
+    if(currLetterStack.peek() === "Backspace"){
       // If we are at the first letter of the first word, don't do anything
       if(currWordPosition.current === 0 && currLetterPosition.current === 0)
         return
       
-      // If the current letter is an extra incorrect letter, reset its state.
+      // If the current letter is not an extra incorrect letter, reset its state.
       getCurrentLetter().state === "incorrectTemp" ? getCurrentLetter() : setLetterState("")
       // If we're at the first letter of a word
       if(currLetterPosition.current === 0){
@@ -109,13 +109,16 @@ const TypingTest: React.FC<ITypingTestProps> = ({ currArrayOfArrayOfWords, testF
       updateWordArray([...currArrayOfArrayOfWords])
     }
     else{
-      if(currLetterStack.peek() === " " && (currWordPosition.current !== currArrayOfArrayOfWords.length - 1)){
+      // If a space was incorrectly entered and we are not on the last word of the test.
+      if(currLetterStack.peek() === " " && !isLastWord() ){
         getCurrentLetter().state = ""
         currWordPosition.current++
         currLetterPosition.current = 0
       }
+      // If we're on a space character
       else if(getCurrentLetter().letterText === " "){
-        currArrayOfArrayOfWords[currWordPosition.current].unshift({
+        // Adds the incorrect temp letter before the last element (the space) of the current word array
+        getCurrentWord().splice(getCurrentWord().length - 1, 0,{
           letterText: event.key,
            state: "incorrectTemp",
             isEndOfWord: false
@@ -130,7 +133,7 @@ const TypingTest: React.FC<ITypingTestProps> = ({ currArrayOfArrayOfWords, testF
     
     if(getCurrentLetter().isEndOfWord){
       // If we're not on the last word
-      if(currArrayOfArrayOfWords.length - 1 !== currWordPosition.current){
+      if(!isLastWord()){
         currWordPosition.current++
         currLetterPosition.current = 0
       }
@@ -145,7 +148,7 @@ const TypingTest: React.FC<ITypingTestProps> = ({ currArrayOfArrayOfWords, testF
     }
 
     // If the user is on the last word
-    if(currArrayOfArrayOfWords.length - 1 === currWordPosition.current){
+    if(isLastWord()){
       // and they have just input the last letter
       if(getCurrentWord().length === currLetterPosition.current){
         /* This line might seem redundant since we are removing the event listener on unmount through useEffect.
@@ -156,15 +159,9 @@ const TypingTest: React.FC<ITypingTestProps> = ({ currArrayOfArrayOfWords, testF
         // Updates 'finish' state in parent component
         updateFinish(timeToFinishTest)
       }
-      else{
-        setLetterState("active")
-        updateWordArray([...currArrayOfArrayOfWords])
-      }
     }
-    else{
-        setLetterState("active")
-        updateWordArray([...currArrayOfArrayOfWords])
-    }
+    setLetterState("active")
+    updateWordArray([...currArrayOfArrayOfWords])
     
     
   }
@@ -180,6 +177,8 @@ const TypingTest: React.FC<ITypingTestProps> = ({ currArrayOfArrayOfWords, testF
   const getCurrentWord = () => {
     return currArrayOfArrayOfWords[currWordPosition.current]
   }
+  
+  const isLastWord = () => currArrayOfArrayOfWords.length - 1 === currWordPosition.current
 
   const restartTest = () => {
     typingTest.current.focus()

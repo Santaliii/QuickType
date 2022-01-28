@@ -1,26 +1,22 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Header from './components/Header'
 import Typer from './components/TypingTest';
-import Timer from './components/Timer'
 import { getWordArray } from "./util/WordArray"
 import { arrayOfArrayOfWords } from "./types/types";
 import Results from './components/Results';
 
-const wordArray = getWordArray(20)
 
 const App: React.FC = () => {
 
-  const [currWordArray, setCurrWordArray] = useState<arrayOfArrayOfWords>(wordArray)
+  const [currWordArray, setCurrWordArray] = useState<arrayOfArrayOfWords>(getWordArray(20))
   const [timeToFinish, setTimeToFinish] = useState<number>(0)
   const [testFinished, setTestFinished] = useState<boolean>(false)
   const [testStarted, setTestStarted] = useState<boolean>(false)
   const [typerInstanceNumber, setTyperInstanceNumber] = useState<number>(1)
   const [numOfWords, setNumOfWords] = useState<number>(20)
 
-  const isFirstRender = useRef(true)
-
   useEffect(() => {
-    isFirstRender.current ? isFirstRender.current = false : initializeNewTest()
+    initializeNewTest()
   }, [numOfWords])
 
   const initializeNewTest = () => {
