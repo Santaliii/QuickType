@@ -193,6 +193,10 @@ const TypingTest: React.FC<ITypingTestProps> = ({ currArrayOfArrayOfWords, testF
   return(
     <div className="center-of-mid typer-container">
 
+      {isTyperFocused ? <div className="focus-instruction evaporated">Press any key to focus</div> : 
+      <div className="focus-instruction">Press any key to focus</div> }
+
+
       <div ref={typingTest} id="test" tabIndex={0} className="word-container-wrapper">
 
         { testStarted ? <Timer testFinished={testFinished} currWordArray={currArrayOfArrayOfWords} /> : 
@@ -201,9 +205,6 @@ const TypingTest: React.FC<ITypingTestProps> = ({ currArrayOfArrayOfWords, testF
             <h1 style={{opacity: 0}}>placeholder</h1>
           </div>
         }
-
-        {isTyperFocused ? '' : <div className="focus-instruction">Press any key to focus</div> }
-
 
         <div className={`word-container ${isTyperFocused ? '' : 'unfocused'}`}>
 

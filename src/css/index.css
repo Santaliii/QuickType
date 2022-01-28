@@ -102,9 +102,11 @@ body {
 }
 
 .focus-instruction {
-    display: inline-block;
-    margin-left: 50px;
-    margin-bottom: 20px;
+    font-size: 1.2rem;
+}
+
+.focus-instruction.evaporated {
+    opacity: 0;
 }
 
 .timer {
@@ -119,7 +121,7 @@ body {
 
 .center-of-mid {
     position: absolute;
-    top: 38%;
+    top: 36%;
     left: 50%;
     transform: translate(-50%);
 }
