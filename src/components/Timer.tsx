@@ -23,10 +23,9 @@ const Timer: React.FC<ITimerProps> = ({currWordArray, testFinished}) => {
     }
 
     return () => {
-      console.log(getNumOfCorrectCharacters(currWordArray));
-      console.log(new Date().getTime() - timeAtTestStart.getTime());
       clearInterval(interval.current)
     }
+    
   }, [])
 
   return(
