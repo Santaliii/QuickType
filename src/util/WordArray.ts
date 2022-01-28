@@ -1,9 +1,9 @@
 import { getWords } from "./WordsToType"
 
-var wordArray: {letterText: string, state: string, isEndOfWord: boolean}[][] = []
+let wordArray: {letterText: string, state: string, isEndOfWord: boolean}[][] = []
 
 export const getWordArray = (numOfWords: number) => {
-   var words = getWords(numOfWords)
+   let words = getWords(numOfWords)
    wordArray = []
   for(let i = 0; i < words.length; i++){
     wordArray[i] = []
