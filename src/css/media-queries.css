@@ -1,0 +1,35 @@
+@media (max-width: 1682px) {
+    .letter {
+        font-size: 1.4rem;
+    }
+    .timer h1 {
+        font-size: 1.4rem;
+    }
+}
+
+@media (max-width: 1383px) {
+    .center-of-mid.typer-container {
+        width: 80%;
+    }
+    .letter {
+        font-size: 1.3rem;
+    }
+    .timer h1 {
+        font-size: 1.3rem;
+    }
+}
+
+@media (max-width: 900px) {
+    .center-of-mid.typer-container {
+        width: 100%;
+    }
+}
+
+@media (max-width: 770px) {
+    .letter {
+        font-size: 1rem;
+    }
+    .timer h1 {
+        font-size: 1rem;
+    }
+}

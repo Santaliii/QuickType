@@ -31,7 +31,7 @@ const Timer: React.FC<ITimerProps> = ({currWordArray, testFinished}) => {
 
   return(
     <div className="timer">
-      <h1>{currentWPM}</h1>
+      <h1>WPM: {currentWPM}</h1>
     </div>
   )
 

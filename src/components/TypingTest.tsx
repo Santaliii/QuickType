@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useRef, MutableRefObject } from "react";
 import letterStack from "../classes/LetterStack";
 import Letter from "./Letter";
+import Timer from "./Timer";
 import { arrayOfArrayOfWords } from "../types/types";
-import {  FaRedoAlt } from "react-icons/fa"
 
 
 interface ITypingTestProps {
@@ -10,12 +10,14 @@ interface ITypingTestProps {
   updateWordArray: (currArray: arrayOfArrayOfWords) => void,
   updateFinish: (timeToFinish: number) => void,
   initializeNewTest: () => void,
-  updateTestStart: (testStart: boolean) => void
+  updateTestStart: (testStart: boolean) => void,
+  testFinished: boolean,
+  testStarted: boolean
 }
 
 
 
-const TypingTest: React.FC<ITypingTestProps> = ({ currArrayOfArrayOfWords,  updateWordArray, updateFinish, updateTestStart, initializeNewTest}) => {
+const TypingTest: React.FC<ITypingTestProps> = ({ currArrayOfArrayOfWords, testFinished, testStarted,  updateWordArray, updateFinish, updateTestStart, initializeNewTest}) => {
 
   /* char stack that keeps track of each letter the user inputs.
   Pushes each pressed letter onto the stack then compares it to the correct input
@@ -47,6 +49,10 @@ const TypingTest: React.FC<ITypingTestProps> = ({ currArrayOfArrayOfWords,  upda
       })
       typingTestRef.addEventListener("keydown", onType)
       typingTestRef.addEventListener("keydown", onFirstType, {once: true})
+
+      // For mobile devices
+      typingTestRef.addEventListener("touchstart", onType)
+      typingTestRef.addEventListener("touchstart", onFirstType, {once: true})
     }
     
     setupListeners()
@@ -54,6 +60,7 @@ const TypingTest: React.FC<ITypingTestProps> = ({ currArrayOfArrayOfWords,  upda
     return () => {
       setIsTyperFocused(true)
       typingTestRef.removeEventListener("keydown", onType)
+      typingTestRef.removeEventListener("touchstart", onType)
       currLetterPosition.current = 0
       currWordPosition.current = 0
     }
@@ -185,18 +192,39 @@ const TypingTest: React.FC<ITypingTestProps> = ({ currArrayOfArrayOfWords,  upda
 
   return(
     <div className="center-of-mid typer-container">
-      {isTyperFocused ? '' : <h3>Press any key to focus</h3> }
+
       <div ref={typingTest} id="test" tabIndex={0} className="word-container-wrapper">
+
+        { testStarted ? <Timer testFinished={testFinished} currWordArray={currArrayOfArrayOfWords} /> : 
+          // Placeholder to account for the size of the WPM counter when it's displayed
+          <div className="timer">
+            <h1 style={{opacity: 0}}>placeholder</h1>
+          </div>
+        }
+
+        {isTyperFocused ? '' : <div className="focus-instruction">Press any key to focus</div> }
+
+
         <div className={`word-container ${isTyperFocused ? '' : 'unfocused'}`}>
-          {currArrayOfArrayOfWords.map((word, index) => 
+
+          { currArrayOfArrayOfWords.map((word, index) => 
+
             <div key={index} className="word">
+
               {word.map((letter, index) => <Letter key={index} letterText={letter.letterText} letterState={letter.state} />  )}
-            </div> )}
+
+            </div> )
+
+          }
+
         </div>
+
       </div> 
+
       <button onClick={restartTest} className="restart-btn">
         restart
       </button>
+
     </div>
   )
 }

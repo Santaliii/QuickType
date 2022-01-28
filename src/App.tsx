@@ -51,7 +51,6 @@ const App: React.FC = () => {
     <div className="container">
       <div className="mid-container">
       <Header updateNumOfWords={updateNumOfWords}/>
-      {testStarted ? <Timer testFinished={testFinished} currWordArray={currWordArray} /> : "" }
       {testFinished ? 
         <Results  initializeNewTest={initializeNewTest} timeToFinishTest={timeToFinish}
           finishedWordArray={currWordArray} /> 
@@ -61,7 +60,9 @@ const App: React.FC = () => {
             updateTestStart={updateTestStart}
               updateWordArray={updateWordArray} 
                 updateFinish={updateFinish}
-                  initializeNewTest={initializeNewTest} />
+                  initializeNewTest={initializeNewTest}
+                    testFinished={testFinished} 
+                      testStarted={testStarted}/>
       }
       </div>
     </div>
